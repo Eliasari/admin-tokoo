@@ -8,20 +8,20 @@ class ProductList extends React.Component{
                     <div className="card-body row">
                         {/* menampilkan Gambar / cover */}
                         <div className="col-5">
-                            <img src={this.props.image} className="img"
-                            height="200" width="200" alt={this.props.name} />
+                            <img src={this.props.fotoProduk} className="img"
+                            height="200" width="200" alt={this.props.namaProduk} />
                         </div>
  
                         {/* menampilkan deskripsi */}
                         <div className="col-7">
                             <h5 className="text-info">
-                                { this.props.name }
+                                { this.props.namaProduk }
                             </h5>
                             <h6 className="text-danger">
-                                Price: { this.props.price}
+                                Deskripsi: { this.props.deskripsiProduk}
                             </h6>
                             <h6 className="text-dark">
-                                Stock: { this.props.stock}
+                                Harga: { this.props.hargaProduk}
                             </h6>
  
                             {/* button untuk mengedit */}

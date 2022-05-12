@@ -7,30 +7,30 @@ export default class Login extends React.Component {
     constructor() {
         super()
         this.state = {
-            username: "",
+            email: "",
             password: "",
             message: "",
             logged: true
         }
-
     }
+
     Login = event => {
         event.preventDefault()
         let sendData = {
-            username: this.state.username,
+            email: this.state.email,
             password: this.state.password
         }
 
-        let url = base_url + "/admin/auth"
+        let url = base_url + "/loginPegawai"
 
 
         axios.post(url, sendData)
             .then(response => {
                 this.setState({ logged: response.data.logged })
                 if (this.state.logged) {
-                    let admin = response.data.data
+                    let pegawai = response.data.data
                     let token = response.data.token
-                    localStorage.setItem("admin", JSON.stringify(admin))
+                    localStorage.setItem("pegawai", JSON.stringify(pegawai))
                     localStorage.setItem("token", token)
                     this.props.history.push("/")
                 } else {
@@ -47,7 +47,7 @@ export default class Login extends React.Component {
                 <div className="col-sm-6 card my-5">
                     <div className="card-header bg-primary text-white text-center">
                         <h4>ATK Toko</h4>
-                        <strong className="text-warning">Admin Sign In</strong>
+                        <strong className="text-warning">Petugas Sign In</strong>
                     </div>
                     <div className="card-body">
                         {!this.state.logged ?
@@ -57,8 +57,8 @@ export default class Login extends React.Component {
                                 </div>
                             ) : null}
                         <form onSubmit={ev => this.Login(ev)}>
-                            <input type="text" className="form-control mb-1" value={this.state.username}
-                                onChange={ev => this.setState({ username: ev.target.value })} />
+                            <input type="text" className="form-control mb-1" value={this.state.email}
+                                onChange={ev => this.setState({ email: ev.target.value })} />
                             <input type="password" className="form-control mb-1" value={this.state.password}
                                 onChange={ev => this.setState({ password: ev.target.value })}
                                 autoComplete="false" />

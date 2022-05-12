@@ -5,7 +5,7 @@ import Product from './pages/Product';
 import Customer from './pages/Customer';
 import Transaction from './pages/Transaction';
 import Home from './pages/Home';
-import Admim from './pages/Admin';
+import Pegawai from './pages/Admin';
 
 export default class App extends React.Component{
   render(){
@@ -16,7 +16,7 @@ export default class App extends React.Component{
         <Route path='/product' component={Product}/>
         <Route path='/customer' component={Customer}/>
         <Route path='/transaction' component={Transaction}/>
-        <Route path='/admin' component={Admim}/>
+        <Route path='/pegawai' component={Pegawai}/>
       </Switch>
     )
   }

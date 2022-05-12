@@ -11,9 +11,10 @@ export default class Admin extends React.Component {
             token: "",
             action: "",
             admins: [],
-            admin_id: "",
-            name: "",
-            username: "",
+            idPegawai: "",
+            namaPegawai: "",
+            alamatPegawai: "",
+            email: "",
             password: "",
             fillPassword: true
         }
@@ -30,10 +31,10 @@ export default class Admin extends React.Component {
         return header
     }
     getAdmins = () => {
-        let url = base_url + "/admin"
+        let url = base_url + "/getPegawai"
         axios.get(url, this.headerConfig())
             .then(response => {
-                this.setState({ admins: response.data })
+                this.setState({ admins: response.data.pegawai })
             })
             .catch(error => {
                 if (error.response) {
@@ -61,7 +62,7 @@ export default class Admin extends React.Component {
                             <tr>
                                 <th>#</th>
                                 <th>Name</th>
-                                <th>Username</th>
+                                <th>email</th>
                                 <th>Option</th>
                             </tr>
                         </thead>
@@ -69,8 +70,8 @@ export default class Admin extends React.Component {
                             {this.state.admins.map((item, index) => (
                                 <tr key={index}>
                                     <td>{index + 1}</td>
-                                    <td>{item.name}</td>
-                                    <td>{item.username}</td>
+                                    <td>{item.namaPegawai}</td>
+                                    <td>{item.email}</td>
                                     <td>
                                         <button className="btn btn-sm btn-info m-1"
                                             onClick={() => this.Edit(item)}>
@@ -90,7 +91,7 @@ export default class Admin extends React.Component {
                         Add Admin
                     </button>
                     {/* modal admin  */}
-                    <div className="modal fade" id="modal_admin">
+                    <div className="modal" id="modal_admin">
                         <div className="modal-dialog">
                             <div className="modal-content">
                                 <div className="modal-header bg-info text-white">
@@ -100,15 +101,15 @@ export default class Admin extends React.Component {
                                     <form onSubmit={ev => this.saveAdmin(ev)}>
                                         Admin Name
                                         <input type="text" className="form-control mb-1"
-                                            value={this.state.name}
-                                            onChange={ev => this.setState({ name: ev.target.value })}
+                                            value={this.state.namaPegawai}
+                                            onChange={ev => this.setState({ namaPegawai: ev.target.value })}
                                             required
                                         />
 
-                                        Username
+                                        Email
                                         <input type="text" className="form-control mb-1"
-                                            value={this.state.username}
-                                            onChange={ev => this.setState({ username: ev.target.value })}
+                                            value={this.state.email}
+                                            onChange={ev => this.setState({ email: ev.target.value })}
                                             required
                                         />
 
@@ -141,41 +142,41 @@ export default class Admin extends React.Component {
         )
     }
     Add = () => {
-        $("#modal_admin").modal("show")
+        $("#modal_admin").show()
         this.setState({
             action: "insert",
-            admin_id: 0,
-            name: "",
-            username: "",
+            idPegawai: 0,
+            namaPegawai: "",
+            email: "",
             password: "",
             fillPassword: true,
         })
     }
     Edit = selectedItem => {
-        $("#modal_admin").modal("show")
+        $("#modal_admin").show()
         this.setState({
             action: "update",
-            admin_id: selectedItem.admin_id,
-            name: selectedItem.name,
-            username: selectedItem.username,
+            idPegawai: selectedItem.idPegawai,
+            namaPegawai: selectedItem.namaPegawai,
+            email: selectedItem.email,
             password: "",
             fillPassword: false,
         })
     }
     saveAdmin = event => {
         event.preventDefault()
-        $("#modal_admin").modal("hide")
+        $("#modal_admin").hide()
         let form = {
-            admin_id: this.state.admin_id,
-            name: this.state.name,
-            username: this.state.username
+            idPegawai: this.state.idPegawai,
+            namaPegawai: this.state.namaPegawai,
+            email: this.state.email
         }
  
         if (this.state.fillPassword) {
             form.password =  this.state.password
         }
  
-        let url = base_url + "/admin"
+        let url = base_url + "/addPegawai"
         if (this.state.action === "insert") {
             axios.post(url, form, this.headerConfig())
             .then(response => {
@@ -194,7 +195,7 @@ export default class Admin extends React.Component {
     }
     dropAdmin = selectedItem => {
         if (window.confirm("are you sure will delete this item?")) {
-            let url = base_url + "/admin/" + selectedItem.admin_id
+            let url = base_url + "/dropPegawai/" + selectedItem.idPegawai
             axios.delete(url, this.headerConfig())
             .then(response => {
                 window.alert(response.data.message)

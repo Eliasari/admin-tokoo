@@ -1,16 +1,17 @@
 import React from "react";
-export default class TransactionList extends React.Component{
+
+class TransactionList extends React.Component{
     
     getAmount = products => {
         let total = 0
         products.map(it => {
-            total += Number(it.price) * Number(it.qty)
+            total += Number(it.hargaProduk) * Number(it.qty)
         })
         return total
     }
  
-    convertTime = time => {
-        let date = new Date(time)
+    convertTime = tanggalTransaksi => {
+        let date = new Date(tanggalTransaksi)
         return `${date.getDate()}/${Number(date.getMonth()) + 1}/${date.getFullYear()}`
     }
     render(){
@@ -21,11 +22,11 @@ export default class TransactionList extends React.Component{
                     <div className="card-body row">
                         <div className="col-lg-4 col-sm-12">
                             <small className="text-info">Customer</small>
-                            <h6>{this.props.customer_name}</h6>
+                            <h6>{this.props.namaUser}</h6>
                         </div>
                         <div className="col-lg-4 col-sm-12">
                             <small className="text-info">Address</small>
-                            <h6>{this.props.customer_address}</h6>
+                            <h6>{this.props.alamatUser}</h6>
                         </div>
                         <div className="col-lg-2 col-sm-12">
                             <small className="text-info">Total Amount</small>
@@ -33,9 +34,9 @@ export default class TransactionList extends React.Component{
                         </div>
                         <div className="col-lg-2 col-sm-12">
                             <small className="text-bold text-info">
-                                Time: { this.convertTime(this.props.time) }
+                                tanggalTransaksi: { this.convertTime(this.props.tanggalTransaksi) }
                             </small>
-                            <button className="btn btn-sm btn-block btn-success" data-toggle="modal" data-target={`#modalDetail${this.props.transaction_id}`}>
+                            <button className="btn btn-sm btn-block btn-success" data-toggle="modal" data-target={`#modalDetail${this.props.idTransaksi}`}>
                                 Details
                             </button>
                         </div>
@@ -43,15 +44,15 @@ export default class TransactionList extends React.Component{
                 </div>
  
                 {/* modal component */}
-                <div className="modal fade" id={`modalDetail${this.props.transaction_id}`}>
+                <div className="modal" id={`modalDetail${this.props.idTransaksi}`}>
                     <div className="modal-dialog modal-lg">
                         <div className="modal-content">
                             <div className="modal-header bg-success text-white">
                                 <h5>Detail of Transaction</h5>
                             </div>
                             <div className="modal-body">
-                                <h5>Customer:{this.props.customer_name}</h5>
-                                <h6>Time:{this.convertTime(this.props.time) }</h6>
+                                <h5>Customer:{this.props.namaUser}</h5>
+                                <h6>Time:{this.convertTime(this.props.tanggalTransaksi) }</h6>
                                 <table className="table table-bordered">
                                     <thead>
                                         <tr>
@@ -65,10 +66,10 @@ export default class TransactionList extends React.Component{
  
                                     <tbody>
                                         { this.props.products.map((item, index) => (
-                                            <tr key={item.product_id}>
+                                            <tr key={item.idProduk}>
                                                 <td>{`${index + 1}`}</td>
-                                                <td>{item.product.name}</td>
-                                                <td>Rp {item.price}</td>
+                                                <td>{item.product.namaProduk}</td>
+                                                <td>Rp {item.hargaProduk}</td>
                                                 <td>{item.qty}</td>
                                                 <td className="text-right">Rp {item.price * item.qty}</td>
                                             </tr>
@@ -93,3 +94,4 @@ export default class TransactionList extends React.Component{
         )
     }
 }
+export default TransactionList;

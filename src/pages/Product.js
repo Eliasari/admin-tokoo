@@ -12,15 +12,15 @@ export default class Product extends React.Component {
             products: [],
             token: "",
             action: "",
-            name: "",
-            price: 0,
-            stock: 0,
-            image: "",
+            namaProduk: "",
+            deskripsiProduk: "",
+            hargaProduk: 0,
+            fotoProduk: "",
             uploadFile: true,
-            product_id: "",
+            idProduk: "",
             selectedItem: null,
         }
-        this.state.product = this.state.products
+        // this.state.product = this.state.products
     
         if (localStorage.getItem("token")) {
             this.state.token = localStorage.getItem("token")
@@ -36,10 +36,10 @@ export default class Product extends React.Component {
         return header
     }
     getProduct = () => {
-        let url = base_url + "/product"
+        let url = base_url + "/getProduk";
         axios.get(url, this.headerConfig())
         .then(response => {
-            this.setState({products: response.data})
+            this.setState({products: response.data.produk})
         })
         .catch(error=>{
             if(error.response){
@@ -64,11 +64,12 @@ export default class Product extends React.Component {
                    <div className="row">
                        { this.state.products.map( item => (
                            <ProductList
-                           key = {item.product_id}
-                           name = {item.name}
-                           price = {item.price}
-                           stock = {item.stock}
-                           image = {item.image}
+                           key = {item.idProduk}
+                           namaProduk = {item.namaProduk}
+                           deskripsiProduk = {item.deskripsiProduk}
+                           hargaProduk = {item.hargaProduk}
+                        //    fotoProduk = {item.fotoProduk}
+                           fotoProduk={`http://localhost:8000/images/${item.fotoProduk}`}
                            onEdit = {() => this.Edit(item)}
                            onDrop = {() => this.dropProduct(item)}
                             />
@@ -80,7 +81,7 @@ export default class Product extends React.Component {
                 </div>
  
                  {/* modal product  */}
-                 <div className="modal" id="modal">
+                 <div className="modal" id="modal_product">
                      <div className="modal-dialog">
                          <div className="modal-content">
                              <div className="modal-header bg-info text-white">
@@ -90,22 +91,22 @@ export default class Product extends React.Component {
                                  <form onSubmit={ev => this.saveProduct(ev)}>
                                      Product Name
                                      <input type="text" className="form-control mb-1"
-                                     value={this.state.name}
-                                     onChange={ev => this.setState({name: ev.target.value})}
+                                     value={this.state.namaProduk}
+                                     onChange={ev => this.setState({namaProduk: ev.target.value})}
                                      required
                                      />
  
-                                    Product Stock
-                                     <input type="number" className="form-control mb-1"
-                                     value={this.state.stock}
-                                     onChange={ev => this.setState({stock: ev.target.value})}
+                                    Deskripsi 
+                                     <input type="text" className="form-control mb-1"
+                                     value={this.state.deskripsiProduk}
+                                     onChange={ev => this.setState({deskripsiProduk: ev.target.value})}
                                      required
                                      />
  
                                     Product Price
                                      <input type="number" className="form-control mb-1"
-                                     value={this.state.price}
-                                     onChange={ev => this.setState({price: ev.target.value})}
+                                     value={this.state.hargaProduk}
+                                     onChange={ev => this.setState({hargaProduk: ev.target.value})}
                                      required
                                      />
  
@@ -118,7 +119,7 @@ export default class Product extends React.Component {
                                         <div>
                                             Product Image
                                             <input type="file" className="form-control mb-1"
-                                            onChange={ev => this.setState({image: ev.target.files[0]})}
+                                            onChange={ev => this.setState({fotoProduk: ev.target.files[0]})}
                                             
                                             required
                                             />
@@ -137,53 +138,55 @@ export default class Product extends React.Component {
         )
     }
     Add = () => {
-        $("#modal_product").modal("show")
+        $("#modal_product").show()
         this.setState({
             action: "insert",
-            product_id: 0,
-            name: "",
-            price: 0,
-            stock: 0,
-            image: null,
+            idProduk: 0,
+            namaProduk: "",
+            deskripsiProduk: "",
+            hargaProduk: 0,
+            fotoProduk: null,
             uploadFile: true
         })
     }
  
     Edit = selectedItem => {
-        $("#modal_product").modal("show")
+        $("#modal_product").show()
         this.setState({
             action: "update",
-            product_id: selectedItem.product_id,
-            name: selectedItem.name,
-            price: selectedItem.price,
-            stock: selectedItem.stock,
-            image: null,
+            idProduk: selectedItem.idProduk,
+            namaProduk: selectedItem.namaProduk,
+            deskripsiProduk: selectedItem.deskripsiProduk,
+            hargaProduk: selectedItem.hargaProduk,
+            fotoProduk: null,
             uploadFile: false
         })
     }
 
     saveProduct = event => {
         event.preventDefault()
-        $("#modal_product").modal("hide")
+        $("#modal_product").hide()
         let form = new FormData()
-        form.append("product_id", this.state.product_id)
-        form.append("name", this.state.name)
-        form.append("price", this.state.price)
-        form.append("stock", this.state.stock)
+        form.append("idProduk", this.state.idProduk)
+        form.append("namaProduk", this.state.namaProduk)
+        form.append("deskripsiProduk", this.state.deskripsiProduk)
+        form.append("hargaProduk", this.state.hargaProduk)
         if (this.state.uploadFile) {
-            form.append("image", this.state.image)
+            form.append("fotoProduk", this.state.fotoProduk)
         }
  
-        let url = base_url + "/product"
+        
         if (this.state.action === "insert") {
+            let url = base_url + "/addProduk";
             axios.post(url, form, this.headerConfig())
             .then(response => {
                 window.alert(response.data.message)
                 this.getProduct()
             })
             .catch(error => console.log(error))
-        } else if(this.state.action === "update") {
-            axios.put(url, form, this.headerConfig())
+        } else {
+            let url2 = base_url + "/updateProduk";
+            axios.put(url2, form, this.headerConfig())
             .then(response => {
                 window.alert(response.data.message)
                 this.getProduct()
@@ -191,9 +194,10 @@ export default class Product extends React.Component {
             .catch(error => console.log(error))
         }
     }
+
     dropProduct = selectedItem => {
         if (window.confirm("are you sure will delete this item?")) {
-            let url = base_url + "/product/" + selectedItem.product_id
+            let url= base_url + "/dropProduk/" + selectedItem.idProduk
             axios.delete(url, this.headerConfig())
             .then(response => {
                 window.alert(response.data.message)

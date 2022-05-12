@@ -1,20 +1,15 @@
 import React from "react"
  
-export default class CustomerList extends React.Component{
+class CustomerList extends React.Component{
     render(){
         return (
             <div className="card col-sm-12 my-1">
                 <div className="card-body row">
-                    <div className="col-sm-3">
-                        {/* image */}
-                        <img alt={this.props.name} src={this.props.image} 
-                        className="img rounded-circle" width="150" height="150" />
-                    </div>
+
                     <div className="col-sm-7">
                         {/* description */}
-                        <h5 className="text-bold">Customer Name: {this.props.name}</h5>
-                        <h6>Customer Phone: {this.props.phone}</h6>
-                        <h6>Customer Address: {this.props.address}</h6>
+                        <h5 className="text-bold">Nama: {this.props.namaUser}</h5>
+                        <h6>alamat: {this.props.alamatUser}</h6>
                     </div>
                     <div className="col-sm-2">
                         {/* action */}
@@ -33,3 +28,4 @@ export default class CustomerList extends React.Component{
         )
     }
 }
+export default CustomerList;

@@ -8,8 +8,8 @@ export default class Transaction extends React.Component {
     constructor(){
         super()
         this.state = {
+            transaksi: [],
             token: "",
-            transaction: [],
             selectedItem: null
         }
  
@@ -18,19 +18,29 @@ export default class Transaction extends React.Component {
         } else {
             window.location = "/login"
         }
+        this.headerConfig.bind(this)
     }
+
     headerConfig = () => {
         let header = {
             headers: { Authorization: `Bearer ${this.state.token}` }
         }
         return header
     }
+
     getTransaction = () => {
-        let url = base_url + "/transaksi"
+        
+        let url = base_url + "/getTransaksi";
+        console.log("ini traksaksi")
  
         axios.get(url, this.headerConfig())
         .then(response => {
-            this.setState({transaction: response.data})
+            this.setState({transaksi: response.data.transaksi})
+            console.log(response.data.transaksi)
+            
+            // console.log(this.state.transaksi)
+            // console.log(response.data.transaksi)
+            // console.log(url)
         })
         .catch(error => {
             if (error.response) {
@@ -55,15 +65,17 @@ export default class Transaction extends React.Component {
  
                 <div className="container">
                     <h3 className="text-bold text-info mt-2">Transactions List</h3>
-                    { this.state.transaction.map(item => (
+                    { this.state.transaksi.map(item => (
                         <TransactionList
-                        key = {item.transaksi_id}
-                        transaction_id = {item.transaksi_id}
-                        customer_name = {item.customer.name}
-                        customer_address = {item.customer.address}
-                        time = {item.waktu}
-                        products = {item.detail_transaksi}
+                        key = {item.idTransaksi}
+                        idTransaksi = {item.idTransaksi}
+                        namaUser = {item.namaUser}
+                        alamatUser = {item.alamatUser}
+                        tanggalTransaksi = {item.tanggalTransaksi}
+                        statusTransaksi = {item.statusTransaksi}
+                        nomorTransaksi = {item.nomorTransaksi}
                          />
+                        // <h1>transaksi</h1>
                     )) }
                 </div>
             </div>

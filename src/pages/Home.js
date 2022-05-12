@@ -10,11 +10,11 @@ export default class Home extends React.Component {
         super()
         this.state = {
             token :"",
-            adminName: null,
+            namaPegawai: null,
             productsCount:0,
-            customerCount : 0,
-            transactionCount : 0,
-            adminCount : 0,
+            customersCount : 0,
+            transactionsCount : 0,
+            adminsCount : 0,
         }
         if (localStorage.getItem("token")){
             this.state.token = localStorage.getItem("token")
@@ -29,7 +29,7 @@ export default class Home extends React.Component {
         return header
     }
     getProduct = () => {
-        let url = base_url + "/product"
+        let url = base_url + "/getProduk"
         axios.get(url, this.headerConfig())
         .then(response=> {
             this.setState({productsCount : response.data.length})
@@ -46,10 +46,10 @@ export default class Home extends React.Component {
         })
     }
     getCustomer = () => {
-        let url = base_url + "/customer"
+        let url = base_url + "/getUser"
         axios.get(url, this.headerConfig())
         .then(response=> {
-            this.setState({customerCount: response.data.length})
+            this.setState({customersCount: response.data.length})
         })
         .catch(error => {
             if(error.response){
@@ -65,7 +65,7 @@ export default class Home extends React.Component {
         })
     }
     getTransaction = () => {
-        let url = base_url + "/transaksi"
+        let url = base_url + "/getTransaksi"
     }
     render() {
 
@@ -74,7 +74,7 @@ export default class Home extends React.Component {
                 <Navbar />
                 <div className="contaner mt-2">
                     <h3 className="my-2">
-                        <strong>Welcome back, {this.state.adminName}</strong>
+                        <strong>Welcome back, {this.state.namaPegawai}</strong>
                     </h3>
                     <div className="row">
                         {/* product count */}
