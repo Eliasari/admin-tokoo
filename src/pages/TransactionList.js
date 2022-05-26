@@ -5,7 +5,7 @@ class TransactionList extends React.Component{
     getAmount = products => {
         let total = 0
         products.map(it => {
-            total += Number(it.hargaProduk) * Number(it.qty)
+            total += Number(it.price) * Number(it.qty)
         })
         return total
     }
@@ -69,7 +69,7 @@ class TransactionList extends React.Component{
                                             <tr key={item.idProduk}>
                                                 <td>{`${index + 1}`}</td>
                                                 <td>{item.product.namaProduk}</td>
-                                                <td>Rp {item.hargaProduk}</td>
+                                                <td>Rp {item.price}</td>
                                                 <td>{item.qty}</td>
                                                 <td className="text-right">Rp {item.price * item.qty}</td>
                                             </tr>

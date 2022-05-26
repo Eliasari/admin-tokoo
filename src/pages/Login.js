@@ -26,7 +26,8 @@ export default class Login extends React.Component {
 
         axios.post(url, sendData)
             .then(response => {
-                this.setState({ logged: response.data.logged })
+                this.setState({ logged: response.data.logged})
+                console.log(response)
                 if (this.state.logged) {
                     let pegawai = response.data.data
                     let token = response.data.token

@@ -8,7 +8,14 @@ export default class Transaction extends React.Component {
     constructor(){
         super()
         this.state = {
-            transaksi: [],
+            transaksi: [
+                {
+                    alamatUser: "Blitar", idTransaksi: 2, 
+                    namaUser: "elia", nomorTransaksi: "099888",
+                    statusTransaksi: "LUNAS", tanggalTransaksi:"2022-04-17T17:00:00.000Z" 
+            }
+        ]
+            ,
             token: "",
             selectedItem: null
         }
@@ -65,18 +72,18 @@ export default class Transaction extends React.Component {
  
                 <div className="container">
                     <h3 className="text-bold text-info mt-2">Transactions List</h3>
-                    { this.state.transaksi.map(item => (
+                    { this.state.transaksi.map((item, index) => (
                         <TransactionList
                         key = {item.idTransaksi}
                         idTransaksi = {item.idTransaksi}
                         namaUser = {item.namaUser}
                         alamatUser = {item.alamatUser}
                         tanggalTransaksi = {item.tanggalTransaksi}
-                        statusTransaksi = {item.statusTransaksi}
+                        // statusTransaksi = {item.statusTransaksi}
                         nomorTransaksi = {item.nomorTransaksi}
                          />
                         // <h1>transaksi</h1>
-                    )) }
+                    ))}
                 </div>
             </div>
         )

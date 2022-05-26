@@ -62,6 +62,7 @@ export default class Admin extends React.Component {
                             <tr>
                                 <th>#</th>
                                 <th>Name</th>
+                                <th>Address</th>
                                 <th>email</th>
                                 <th>Option</th>
                             </tr>
@@ -71,6 +72,7 @@ export default class Admin extends React.Component {
                                 <tr key={index}>
                                     <td>{index + 1}</td>
                                     <td>{item.namaPegawai}</td>
+                                    <td>{item.alamatPegawai}</td>
                                     <td>{item.email}</td>
                                     <td>
                                         <button className="btn btn-sm btn-info m-1"
@@ -106,6 +108,12 @@ export default class Admin extends React.Component {
                                             required
                                         />
 
+                                        Address
+                                        <input type="text" className="form-control mb-1"
+                                            value={this.state.alamatPegawai}
+                                            onChange={ev => this.setState({ alamatPegawai: ev.target.value })}
+                                            required
+                                        />
                                         Email
                                         <input type="text" className="form-control mb-1"
                                             value={this.state.email}
@@ -147,6 +155,7 @@ export default class Admin extends React.Component {
             action: "insert",
             idPegawai: 0,
             namaPegawai: "",
+            alamatPegawai: "",
             email: "",
             password: "",
             fillPassword: true,
@@ -158,6 +167,7 @@ export default class Admin extends React.Component {
             action: "update",
             idPegawai: selectedItem.idPegawai,
             namaPegawai: selectedItem.namaPegawai,
+            alamatPegawai: selectedItem.alamatPegawai,
             email: selectedItem.email,
             password: "",
             fillPassword: false,
@@ -169,39 +179,42 @@ export default class Admin extends React.Component {
         let form = {
             idPegawai: this.state.idPegawai,
             namaPegawai: this.state.namaPegawai,
+            alamatPegawai: this.state.alamatPegawai,
             email: this.state.email
         }
- 
+
         if (this.state.fillPassword) {
-            form.password =  this.state.password
+            form.password = this.state.password
         }
- 
-        let url = base_url + "/addPegawai"
+
+
         if (this.state.action === "insert") {
+            let url = base_url + "/addPegawai"
             axios.post(url, form, this.headerConfig())
-            .then(response => {
-                window.alert(response.data.message)
-                this.getAdmins()
-            })
-            .catch(error => console.log(error))
-        } else if(this.state.action === "update") {
-            axios.put(url, form, this.headerConfig())
-            .then(response => {
-                window.alert(response.data.message)
-                this.getAdmins()
-            })
-            .catch(error => console.log(error))
+                .then(response => {
+                    window.alert(response.data.message)
+                    this.getAdmins()
+                })
+                .catch(error => console.log(error))
+        } else if (this.state.action === "update") {
+            let url2 = base_url + "/updatePegawai"
+            axios.put(url2, form, this.headerConfig())
+                .then(response => {
+                    window.alert(response.data.message)
+                    this.getAdmins()
+                })
+                .catch(error => console.log(error))
         }
     }
     dropAdmin = selectedItem => {
         if (window.confirm("are you sure will delete this item?")) {
             let url = base_url + "/dropPegawai/" + selectedItem.idPegawai
             axios.delete(url, this.headerConfig())
-            .then(response => {
-                window.alert(response.data.message)
-                this.getAdmins()
-            })
-            .catch(error => console.log(error))
+                .then(response => {
+                    window.alert(response.data.message)
+                    this.getAdmins()
+                })
+                .catch(error => console.log(error))
         }
     }
 

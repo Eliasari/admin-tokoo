@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 class Navbar extends React.Component {
     Logout = () => {
         localStorage.removeItem("token")
-        localStorage.removeItem("petugas")
+        localStorage.removeItem("pegawai")
         window.location = "/login"
     }
     render() {

@@ -32,7 +32,8 @@ export default class Home extends React.Component {
         let url = base_url + "/getProduk"
         axios.get(url, this.headerConfig())
         .then(response=> {
-            this.setState({productsCount : response.data.length})
+            this.setState({productsCount : response.data.produk})
+            console.logz(response.data.produk)
         })
         .catch(error => {
             if(error.response){
@@ -49,7 +50,7 @@ export default class Home extends React.Component {
         let url = base_url + "/getUser"
         axios.get(url, this.headerConfig())
         .then(response=> {
-            this.setState({customersCount: response.data.length})
+            this.setState({customersCount: response.data.results})
         })
         .catch(error => {
             if(error.response){

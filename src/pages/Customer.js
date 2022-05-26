@@ -12,12 +12,12 @@ export default class Customer extends React.Component {
             customers: [],
             token: "",
             action: "",
+            idUser: "",
             namaUser: "",
             alamatUser: "",
             email: "",
             password: "",
-            fillPassword: true,
-            idUser: "",
+            fillPassword: true
         }
 
         if (localStorage.getItem("token")) {
@@ -67,6 +67,7 @@ export default class Customer extends React.Component {
                                 key={item.idUser}
                                 namaUser={item.namaUser}
                                 alamatUser={item.alamatUser}
+                                email={item.email}
                                 onEdit={() => this.Edit(item)}
                                 onDrop={() => this.dropCustomer(item)}
                             />
@@ -160,13 +161,19 @@ export default class Customer extends React.Component {
     saveCustomer = event => {
         event.preventDefault()
         $("#modal_customer").hide()
-        let form = new FormData()
-        form.append("idUser", this.state.idUser)
-        form.append("namaUser", this.state.namaUser)
-        form.append("alamatUser", this.state.alamatUser)
-        form.append("email", this.state.email)
+        let form = {
+            idUser: this.state.idUser,
+            namaUser: this.state.namaUser,
+            alamatUser: this.state.alamatUser,
+            email: this.state.email
+        }
+        // let form = new FormData()
+        // form.append("idUser", this.state.idUser)
+        // form.append("namaUser", this.state.namaUser)
+        // form.append("alamatUser", this.state.alamatUser)
+        // form.append("email", this.state.email)
         if (this.state.fillPassword) {
-            form.append("password", this.state.password)
+            form.password = this.state.password
         }
 
 
